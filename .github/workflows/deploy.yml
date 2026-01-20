@@ -1,4 +1,4 @@
-name: Deploy on VM (self-hosted)
+name: Deploy to VM (self-hosted)
 
 on:
   push:
@@ -9,28 +9,52 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Debug runner
+      - name: Debug runner environment
         run: |
+          set -euxo pipefail
+          echo "=== whoami / hostname / pwd ==="
           whoami
           hostname
-          echo "Runner OK"
+          pwd
+          echo "=== date ==="
+          date
+          echo "=== IPs ==="
+          ip -br a || true
+          echo "=== check paths ==="
+          ls -la /var/www/myapp || true
+          ls -la /var/www/myapp/public || true
+          ls -la /var/www/myapp/hello_phph || true
+          ls -la /var/www/myapp/hello_phph/.git || true
 
-      - name: Deploy (git sync)
+      - name: Deploy (sync repo)
         run: |
-          set -e
+          set -euxo pipefail
 
           REPO_DIR="/var/www/myapp/hello_phph"
           BRANCH="main"
 
           if [ ! -d "$REPO_DIR/.git" ]; then
-            echo "ERROR: $REPO_DIR is not a git repo"
-            echo "If your repo is elsewhere, update REPO_DIR."
+            echo "ERROR: $REPO_DIR is not a git repo (.git missing)."
+            echo "Fix on VM: cd /var/www/myapp && git clone https://github.com/Screameerrr/hello_phph.git hello_phph"
             exit 1
           fi
 
           cd "$REPO_DIR"
+
+          echo "=== before ==="
+          git rev-parse --short HEAD || true
+          git status --porcelain || true
+
           git fetch origin "$BRANCH"
           git checkout "$BRANCH"
           git reset --hard "origin/$BRANCH"
 
-          echo "Deploy OK: $(git rev-parse --short HEAD)"
+          echo "=== after ==="
+          git rev-parse --short HEAD
+          git status --porcelain
+
+      - name: Quick HTTP check (local)
+        run: |
+          set -euxo pipefail
+          curl -I http://127.0.0.1/ | head -n 20
+
