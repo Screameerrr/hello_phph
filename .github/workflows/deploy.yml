@@ -48,4 +48,13 @@ jobs:
           cd "$REPO_DIR"
 
           echo "=== before ==="
-          g
+          git rev-parse --short HEAD || true
+          git status --porcelain || true
+
+          git fetch origin "$BRANCH"
+          git checkout "$BRANCH"
+          git reset --hard "origin/$BRANCH"
+
+          echo "=== after ==="
+          git rev-parse --short HEAD
+          git status --porcelain
