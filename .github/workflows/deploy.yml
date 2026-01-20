@@ -9,13 +9,16 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      - name: Who am I
+        run: |
+          whoami
+          id
+          hostname
+          pwd
+
       - name: Debug runner environment
         run: |
           set -euxo pipefail
-          echo "=== whoami / hostname / pwd ==="
-          whoami
-          hostname
-          pwd
           echo "=== date ==="
           date
           echo "=== IPs ==="
@@ -39,22 +42,10 @@ jobs:
             exit 1
           fi
 
+          # Fix: Git "dubious ownership" protection on self-hosted runners
+          git config --global --add safe.directory "$REPO_DIR"
+
           cd "$REPO_DIR"
 
           echo "=== before ==="
-          git rev-parse --short HEAD || true
-          git status --porcelain || true
-
-          git fetch origin "$BRANCH"
-          git checkout "$BRANCH"
-          git reset --hard "origin/$BRANCH"
-
-          echo "=== after ==="
-          git rev-parse --short HEAD
-          git status --porcelain
-
-      - name: Quick HTTP check (local)
-        run: |
-          set -euxo pipefail
-          curl -I http://127.0.0.1/ | head -n 20
-
+          g
