@@ -1,6 +1,12 @@
 <?php
 declare(strict_types=1);
 
+echo "Hello World!\n";
+
+
+
+
+
 /**
  * Задание 1. Функция классификации возраста (if/elseif/else)
  */
@@ -62,6 +68,9 @@ function classifyAgeMatch(int $age): string
     <title>PHP Basics Detailed</title>
 </head>
 <body>
+
+\
+
 
 
 
