@@ -58,3 +58,14 @@ jobs:
           echo "=== after ==="
           git rev-parse --short HEAD
           git status --porcelain
+
+      - name: Fix permissions for SFTP (make group writable)
+        run: |
+          set -euxo pipefail
+          REPO_DIR="/var/www/myapp/hello_phph"
+
+          # папки: rwx для owner+group, setgid чтобы новые файлы наследовали группу
+          sudo find "$REPO_DIR" -type d -exec chmod 2775 {} \;
+
+          # файлы: rw для owner+group
+          sudo find "$REPO_DIR" -type f -exec chmod 664 {} \;
