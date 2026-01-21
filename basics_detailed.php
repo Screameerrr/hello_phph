@@ -1,7 +1,7 @@
 <?php
 
-$price = 100;
-$discount = 10;
+$price = 19500;
+$discount = 105;
 $total = $price - $discount;
 echo $total;
 echo "<br>";
