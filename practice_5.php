@@ -144,11 +144,6 @@ function stackPush(array &$stack, mixed $value): void
     $stack[] = $value;
 }
 
-/**
- * @param array<int, mixed> $stack
- *
- * @return mixed
- */
 function stackPop(array &$stack): mixed
 {
     return $stack === [] ? null : array_pop($stack);
@@ -162,11 +157,6 @@ function queueEnqueue(array &$queue, mixed $value): void
     $queue[] = $value;
 }
 
-/**
- * @param array<int, mixed> $queue
- *
- * @return mixed
- */
 function queueDequeue(array &$queue): mixed
 {
     return $queue === [] ? null : array_shift($queue);

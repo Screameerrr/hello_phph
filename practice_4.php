@@ -1,7 +1,6 @@
 <?php
-/**
- * Генерирует HTML-шаблон письма с использованием heredoc (с интерполяцией переменных).
- */
+
+// Задание 1
 function generateEmailTemplate(string $name, string $product): string
 {
     $safeName = htmlspecialchars($name, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
@@ -25,10 +24,7 @@ HTML;
     return $html;
 }
 
-/**
- * Возвращает пример текста в формате nowdoc (без интерполяции).
- * Удобно для вывода примеров кода/шаблонов без подстановки переменных.
- */
+
 function generateNowdocExample(): string
 {
     $example = <<<'TXT'
@@ -40,10 +36,7 @@ TXT;
     return $example;
 }
 
-/**
- * Возвращает первый и последний символ строки (Unicode-safe) с помощью mb_*.
- * Корректно работает с кириллицей и эмодзи при включённой mbstring.
- */
+// Задание 2
 function getFirstAndLastChar(string $str): array
 {
     $encoding = 'UTF-8';
@@ -63,10 +56,7 @@ function getFirstAndLastChar(string $str): array
     return ['first' => $first, 'last' => $last];
 }
 
-/**
- * Собирает полное имя из имени и фамилии, удаляя пробелы по краям.
- * Если один из компонентов пустой — корректно возвращает второй без лишнего пробела.
- */
+// Задание 3
 function buildFullName(string $first, string $last): string
 {
     $first = trim($first);
@@ -83,10 +73,7 @@ function buildFullName(string $first, string $last): string
     return $first . ' ' . $last;
 }
 
-/**
- * Приводит каждое слово к виду "С заглавной буквы" с поддержкой Unicode.
- * Аналог ucwords(), но на mb_*.
- */
+// Задание 4
 function toTitleCase(string $phrase): string
 {
     $encoding = 'UTF-8';
@@ -117,11 +104,7 @@ function toTitleCase(string $phrase): string
     return implode(' ', $result);
 }
 
-/**
- * Извлекает имя файла из полного пути.
- * Пример: "/var/www/index.php" -> "index.php"
- * Если слеша нет — возвращает исходную строку.
- */
+// Задание 5
 function extractFileName(string $path): string
 {
     if ($path === '') {
@@ -136,10 +119,7 @@ function extractFileName(string $path): string
     return substr($path, $pos + 1);
 }
 
-/**
- * Объединяет массив тегов в CSV-строку через ", ".
- * Пустые/пробельные элементы игнорируются.
- */
+// Задание 6
 function tagListToCSV(array $tags): string
 {
     $clean = [];
@@ -154,11 +134,7 @@ function tagListToCSV(array $tags): string
     return implode(', ', $clean);
 }
 
-/**
- * Преобразует CSV-строку тегов обратно в массив.
- * Учитывает пробелы вокруг запятых: "php, regex, web" -> ["php","regex","web"]
- * Пустые элементы игнорируются.
- */
+// Задание 6
 function csvToTagList(string $csv): array
 {
     $csv = trim($csv);
@@ -179,29 +155,19 @@ function csvToTagList(string $csv): array
     return $tags;
 }
 
-/**
- * Безопасно готовит пользовательский ввод к выводу в HTML.
- */
+// Задание 7
 function safeEcho(string $userInput): string
 {
     return htmlspecialchars($userInput, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
-/**
- * Формирует URL поиска вида "https://example.com/search?q=..."
- * Значение q кодируется через rawurlencode().
- */
+// Задание 8
 function buildSearchUrl(string $query): string
 {
     return 'https://example.com/search?q=' . rawurlencode($query);
 }
 
-/**
- * Проверяет пароль одним регулярным выражением (с упреждающими проверками):
- * - минимум 8 символов
- * - хотя бы одна заглавная буква
- * - хотя бы одна цифра
- */
+// Задание 9
 function validatePassword(string $pass): bool
 {
     if ($pass === '') {
@@ -211,10 +177,7 @@ function validatePassword(string $pass): bool
     return preg_match('/^(?=.{8,})(?=.*\p{Lu})(?=.*\d).+$/u', $pass) === 1;
 }
 
-/**
- * Извлекает все email-адреса из текста с помощью preg_match_all().
- * Используется простой, но практичный шаблон. Флаги i и u.
- */
+// Задание 10
 function extractEmails(string $text): array
 {
     if ($text === '') {
@@ -233,57 +196,59 @@ function extractEmails(string $text): array
     return $matches[0];
 }
 
-/**
- * Оборачивает все числа в тексте в тег <mark>...</mark>.
- * Поддерживаются целые и десятичные числа:
- * - 12
- * - 12.34
- * - 12,34
- */
+// Задание 11
 function highlightNumbers(string $text): string
 {
     if ($text === '') {
         return '';
     }
 
-    // Число: \d+ и необязательная дробная часть через . или ,
     return preg_replace('/\d+(?:[.,]\d+)?/u', '<mark>$0</mark>', $text) ?? $text;
 }
 
-/*
-|--------------------------------------------------------------------------
-| Демонстрация вызовов
-|--------------------------------------------------------------------------
-|
-*/
-
+// Задание 1
 /*
 echo "=== generateEmailTemplate (heredoc) ===\n";
 echo generateEmailTemplate('Максим', 'Курс PHP 8') . "\n\n";
 
 echo "=== nowdoc example ===\n";
 echo generateNowdocExample() . "\n\n";
+*/
 
+// Задание 2
+/*
 echo "=== getFirstAndLastChar ===\n";
 print_r(getFirstAndLastChar('Привет'));
 print_r(getFirstAndLastChar('🙂Ок🙂'));
 print_r(getFirstAndLastChar(''));
 echo "\n";
+*/
 
+// Задание 3
+/*
 echo "=== buildFullName ===\n";
 echo buildFullName('  Иван  ', '  Петров ') . "\n";
 echo buildFullName('Иван', '') . "\n";
 echo buildFullName('', 'Петров') . "\n\n";
+*/
 
+// Задание 4
+/*
 echo "=== toTitleCase ===\n";
 echo toTitleCase('привет мир') . "\n";
 echo toTitleCase('  вОТ   тАкОЙ   тЕкСт 🙂  ') . "\n\n";
+*/
 
+// Задание 5
+/*
 echo "=== extractFileName ===\n";
 echo extractFileName('/var/www/index.php') . "\n";
 echo extractFileName('index.php') . "\n";
 echo extractFileName('') . "\n\n";
+*/
 
+// Задание 6
+/*
 echo "=== tagListToCSV / csvToTagList ===\n";
 $tags = [' php ', 'regex', '  ', 'web'];
 $csv = tagListToCSV($tags);
@@ -291,25 +256,40 @@ echo $csv . "\n";
 print_r(csvToTagList('php, regex, web'));
 print_r(csvToTagList(' php ,  regex,web  , '));
 echo "\n";
+*/
 
+// Задание 7
+/*
 echo "=== safeEcho ===\n";
 echo safeEcho('<script>alert("xss")</script>') . "\n\n";
+*/
 
+// Задание 8
+/*
 echo "=== buildSearchUrl ===\n";
 echo buildSearchUrl('php regex кириллица 🙂') . "\n\n";
+*/
 
+// Задание 9
+/*
 echo "=== validatePassword ===\n";
-var_dump(validatePassword('Passw0rd'));      // true
-var_dump(validatePassword('password1'));     // false (нет заглавной)
-var_dump(validatePassword('PASSWORD'));      // false (нет цифры, <8?)
-var_dump(validatePassword('Abcdefg1'));      // true
+var_dump(validatePassword('Passw0rd'));
+var_dump(validatePassword('password1'));
+var_dump(validatePassword('PASSWORD'));
+var_dump(validatePassword('Abcdefg1'));
 echo "\n";
+*/
 
+// Задание 10
+/*
 echo "=== extractEmails ===\n";
 $text = 'Почты: test@example.com, Admin+1@site.org и невалидная a@b. Ещё: user.name@domain.co';
 print_r(extractEmails($text));
 echo "\n";
+*/
 
+// Задание 11
+/*
 echo "=== highlightNumbers ===\n";
 echo highlightNumbers('Цена 12.50, скидка 10%, итого 2,5 раза.') . "\n";
 */
